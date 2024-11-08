@@ -29,7 +29,7 @@ def send_daily_request():
 
 @app.on_event("startup")
 def start_scheduler():
-    scheduler.add_job(send_daily_request, 'cron', hour=11, minute=40)  # Soat ishga tushadi
+    scheduler.add_job(send_daily_request, 'cron', hour=11, minute=50)  # Soat ishga tushadi
     scheduler.start()
 
 # Ilova yopilganda scheduler ham to'xtaydi
