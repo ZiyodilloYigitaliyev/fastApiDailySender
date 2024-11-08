@@ -2,3 +2,4 @@ python-dotenv
 apscheduler
 fastapi
 uvicorn[gunicorn]
+gunicorn
