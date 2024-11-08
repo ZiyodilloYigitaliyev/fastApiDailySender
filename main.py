@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = FastAPI()
+secret_key = os.getenv("SECRET_KEY")
 scheduler = BackgroundScheduler()
 # Django API URL manzili
 DJANGO_API_URL = os.getenv("DJANGO_API_URL")  # Django API URL manzilini o'zingizga moslang
