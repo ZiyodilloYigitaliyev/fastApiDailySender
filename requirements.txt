@@ -1,4 +1,6 @@
-python-dotenv
-apscheduler
 fastapi
 gunicorn
+apscheduler
+requests
+python-dotenv  # faqatgina .env fayli ishlatilsa kerak
+uvicorn
