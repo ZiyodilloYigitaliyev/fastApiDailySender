@@ -1,10 +1,10 @@
-# fastapi_app/main.py
 from fastapi import FastAPI
 from apscheduler.schedulers.background import BackgroundScheduler
 import requests
 import datetime
 import os
 from dotenv import load_dotenv
+import pytz  # Yangi kutubxona
 
 # .env faylini yuklash
 load_dotenv()
@@ -18,18 +18,22 @@ DJANGO_API_URL = os.getenv("DJANGO_API_URL")  # Django API URL manzilini o'zingi
 # Har kuni yuboriladigan vazifa
 def send_daily_request():
     try:
+        # Asia/Tashkent vaqt zonasini olish
+        tz = pytz.timezone('Asia/Tashkent')
+        now = datetime.datetime.now(tz)  # O'zbekiston vaqtiga moslangan vaqt
+        
         response = requests.get(DJANGO_API_URL, params={"message": "Har kunlik so'rov yuborildi"})
         if response.status_code == 200:
-            print(f"{datetime.datetime.now()}: So'rov muvaffaqiyatli yuborildi")
+            print(f"{now}: So'rov muvaffaqiyatli yuborildi")
         else:
-            print(f"{datetime.datetime.now()}: Xato - Status code: {response.status_code}")
+            print(f"{now}: Xato - Status code: {response.status_code}")
     except requests.RequestException as e:
         print(f"{datetime.datetime.now()}: So'rovda xatolik: {e}")
 
-
 @app.on_event("startup")
 def start_scheduler():
-    scheduler.add_job(send_daily_request, 'cron', hour=17, minute=0)  # Soat ishga tushadi
+    # Har kuni soat 17:00 (Toshkent vaqti) da yuborilsin
+    scheduler.add_job(send_daily_request, 'cron', hour=0, minute=0, timezone='Asia/Tashkent')
     scheduler.start()
 
 # Ilova yopilganda scheduler ham to'xtaydi
